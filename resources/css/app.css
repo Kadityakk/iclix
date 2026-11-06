@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-ink: #0b0b0f;
+    --color-card: #16161d;
+    --color-card-hover: #1f1f29;
+    --color-body: #f5f5f5;
+    --color-muted: #a1a1aa;
+    --color-navy: #141632;
+    --color-brand: #7c3aed;
+    --color-brand-hover: #8b5cf6;
+    --color-glow: #c026d3;
+
+    --animate-drift: drift 9s ease-in-out infinite;
+
+    @keyframes drift {
+        0%,
+        100% {
+            translate: 0 0;
+        }
+
+        50% {
+            translate: 0 -14px;
+        }
+    }
+}
+
+@layer base {
+    :root {
+        color-scheme: dark;
+    }
+
+    body {
+        background-color: var(--color-ink);
+        color: var(--color-body);
+    }
+
+    button:not(:disabled),
+    [role='button'] {
+        cursor: pointer;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-brand-hover);
+        outline-offset: 2px;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@utility scrollbar-none {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 700ms ease,
+        transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .animate-drift {
+        animation: none;
+    }
+}
