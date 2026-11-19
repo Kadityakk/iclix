@@ -8,6 +8,8 @@ use App\Http\Requests\Admin\ContentRequest;
 use App\Models\Content;
 use App\Models\Genre;
 use App\Support\ContentMedia;
+use App\Support\Imdb\ImdbSync;
+use App\Support\Imdb\ImdbUnavailableException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +17,7 @@ use Illuminate\View\View;
 
 class ContentController extends Controller
 {
-    public function __construct(private ContentMedia $media) {}
+    public function __construct(private ContentMedia $media, private ImdbSync $imdb) {}
 
     /**
      * List content with search and a type filter.
@@ -60,7 +62,7 @@ class ContentController extends Controller
         $content->genres()->sync($request->validated('genres'));
 
         return redirect()->route($content->isSeries() ? 'admin.contents.seasons.index' : 'admin.contents.index', $content->isSeries() ? $content : [])
-            ->with('status', "{$content->title} berhasil ditambahkan.");
+            ->with('status', "{$content->title} berhasil ditambahkan.".$this->syncImdb($content));
     }
 
     /**
@@ -92,7 +94,7 @@ class ContentController extends Controller
                 : $this->media->deleteImage($previousFiles[$field]);
         }
 
-        return redirect()->route('admin.contents.index')->with('status', "{$content->title} berhasil diperbarui.");
+        return redirect()->route('admin.contents.index')->with('status', "{$content->title} berhasil diperbarui.".$this->syncImdb($content));
     }
 
     /**
@@ -116,6 +118,26 @@ class ContentController extends Controller
         return back()->with('status', $content->is_featured
             ? "{$content->title} tampil di banner hero."
             : "{$content->title} dilepas dari banner hero.");
+    }
+
+    /**
+     * Pull the rating and poster from IMDb, returning a note for the flash message when that fails.
+     */
+    private function syncImdb(Content $content): string
+    {
+        if (! $content->imdb_id) {
+            $content->update(['imdb_rating' => null]);
+
+            return '';
+        }
+
+        try {
+            $this->imdb->sync($content);
+
+            return '';
+        } catch (ImdbUnavailableException $exception) {
+            return ' Data IMDb belum diambil: '.$exception->getMessage();
+        }
     }
 
     /**

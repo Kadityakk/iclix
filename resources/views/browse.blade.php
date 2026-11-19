@@ -12,16 +12,16 @@
             <x-content-row title="Lanjutkan Menonton">
                 @foreach ($continueWatching as $history)
                     <a href="{{ $history->episode ? route('watch', [$history->content, $history->episode]) : route('watch', $history->content) }}"
-                       class="group w-64 shrink-0 snap-start space-y-2 sm:w-72">
-                        <span class="relative block aspect-video overflow-hidden rounded-xl bg-card">
-                            @if ($history->content->backdropUrl())
-                                <img src="{{ $history->content->backdropUrl() }}" alt="Gambar {{ $history->content->title }}" loading="lazy" class="size-full object-cover transition duration-300 group-hover:scale-105">
+                       class="group w-36 shrink-0 snap-start space-y-2 sm:w-44 lg:w-48">
+                        <span class="relative block aspect-[2/3] overflow-hidden rounded-xl bg-card">
+                            @if ($history->content->posterUrl())
+                                <img src="{{ $history->content->posterUrl() }}" alt="Poster {{ $history->content->title }}" loading="lazy" class="size-full object-cover">
                             @endif
                             <span class="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition group-hover:opacity-100">
                                 <span class="flex size-12 items-center justify-center rounded-full bg-white text-black"><x-icon name="play" /></span>
                             </span>
                             <span class="absolute inset-x-0 bottom-0 h-1 bg-white/25" role="progressbar" aria-valuenow="{{ $history->progressPercent() }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progres tonton">
-                                <span class="block h-full bg-brand-hover" style="width: {{ $history->progressPercent() }}%"></span>
+                                <span class="block h-full bg-white" style="width: {{ $history->progressPercent() }}%"></span>
                             </span>
                         </span>
                         <span class="block truncate text-sm font-medium">{{ $history->content->title }}</span>

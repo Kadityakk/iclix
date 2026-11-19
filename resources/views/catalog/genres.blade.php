@@ -5,7 +5,7 @@
         <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             @foreach ($genres as $genre)
                 <a href="{{ route('movies.index', ['genre' => $genre->slug]) }}" x-reveal
-                   class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-navy to-brand/30 p-6 transition hover:border-white/40">
+                   class="rounded-2xl bg-card p-6 transition hover:bg-card-hover">
                     <span class="block text-lg font-semibold">{{ $genre->name }}</span>
                     <span class="text-sm text-muted">{{ $genre->contents_count }} judul</span>
                 </a>

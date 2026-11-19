@@ -39,6 +39,7 @@ class ContentRequest extends FormRequest
 
         return [
             'type' => $isCreating ? ['required', Rule::enum(ContentType::class)] : ['exclude'],
+            'imdb_id' => ['nullable', 'string', 'regex:/^tt\d{7,10}$/', Rule::unique('contents', 'imdb_id')->ignore($content)],
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['required_with:title', 'nullable', 'string', 'max:255', Rule::unique('contents', 'slug')->ignore($content)],
             'synopsis' => ['required', 'string', 'max:5000'],
@@ -52,7 +53,7 @@ class ContentRequest extends FormRequest
             'is_featured' => ['boolean'],
             'genres' => ['required', 'array', 'min:1'],
             'genres.*' => ['integer', 'exists:genres,id'],
-            'poster' => [$isCreating ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:'.self::MAX_IMAGE_KB],
+            'poster' => [$isCreating ? 'required_without:imdb_id' : 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:'.self::MAX_IMAGE_KB],
             'backdrop' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:'.self::MAX_IMAGE_KB],
             'video' => $isMovie
                 ? [$isCreating ? 'required' : 'nullable', 'file', 'mimes:mp4', 'max:'.self::MAX_VIDEO_KB]
@@ -70,6 +71,8 @@ class ContentRequest extends FormRequest
         return [
             'trailer_url.regex' => 'Trailer harus berupa tautan video YouTube.',
             'genres.required' => 'Pilih minimal satu genre.',
+            'imdb_id.regex' => 'ID IMDb berbentuk tt diikuti angka, misalnya tt0816692.',
+            'poster.required_without' => 'Unggah poster atau isi ID IMDb.',
         ];
     }
 

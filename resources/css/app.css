@@ -17,20 +17,6 @@
     --color-navy: #141632;
     --color-brand: #7c3aed;
     --color-brand-hover: #8b5cf6;
-    --color-glow: #c026d3;
-
-    --animate-drift: drift 9s ease-in-out infinite;
-
-    @keyframes drift {
-        0%,
-        100% {
-            translate: 0 0;
-        }
-
-        50% {
-            translate: 0 -14px;
-        }
-    }
 }
 
 @layer base {
@@ -84,9 +70,5 @@
         opacity: 1;
         transform: none;
         transition: none;
-    }
-
-    .animate-drift {
-        animation: none;
     }
 }

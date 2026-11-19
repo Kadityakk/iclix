@@ -1,6 +1,6 @@
 <x-app-layout title="Pencarian">
     <div class="space-y-6 px-4 pt-24 sm:px-6"
-         x-data="liveSearch(@js($term), @js($results->map->toCardData()->values()))">
+         x-data="liveSearch(@js($term), @js($results))">
         <h1 class="text-3xl font-bold">Pencarian</h1>
 
         <div class="flex h-12 max-w-2xl items-center gap-3 rounded-full border border-white/15 bg-white/10 px-5 focus-within:border-white/40">
@@ -18,8 +18,8 @@
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             <template x-for="result in results" :key="result.id">
                 <article class="group/card">
-                    <a :href="result.url" class="block aspect-[2/3] overflow-hidden rounded-xl bg-card transition duration-300 group-hover/card:scale-105">
-                        <img :src="result.poster" :alt="`Poster ${result.title}`" loading="lazy" class="size-full object-cover">
+                    <a :href="result.url" class="block aspect-[2/3] overflow-hidden rounded-xl bg-card transition duration-300 group-hover/card:-translate-y-1">
+                        <img x-show="result.poster" :src="result.poster" :alt="`Poster ${result.title}`" loading="lazy" class="size-full object-cover">
                     </a>
                     <h2 class="mt-2 truncate text-sm font-medium" x-text="result.title"></h2>
                     <p class="text-xs text-muted" x-text="`${result.type} · ${result.year}`"></p>

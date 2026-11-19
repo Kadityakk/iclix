@@ -3,12 +3,12 @@
         @php($isRecommended = $loop->iteration === 2)
         <article x-reveal style="transition-delay: {{ $loop->index * 100 }}ms"
                  @class([
-                     'relative flex flex-col rounded-3xl border p-7',
-                     'border-brand-hover bg-gradient-to-b from-brand/25 to-card shadow-xl shadow-brand/20' => $isRecommended,
-                     'border-white/10 bg-card' => ! $isRecommended,
+                     'relative flex flex-col rounded-3xl border bg-card p-7',
+                     'border-white/60' => $isRecommended,
+                     'border-transparent' => ! $isRecommended,
                  ])>
             @if ($isRecommended)
-                <span class="absolute -top-3 left-7 rounded-full bg-brand px-3 py-1 text-xs font-semibold">Paling populer</span>
+                <span class="absolute -top-3 left-7 rounded-full bg-white px-3 py-1 text-xs font-semibold text-black">Paling populer</span>
             @endif
 
             <h3 class="text-xl font-semibold">{{ $plan->name }}</h3>

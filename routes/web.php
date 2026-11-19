@@ -7,6 +7,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DashboardRedirectController;
+use App\Http\Controllers\ImdbImportController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PlayerController;
@@ -45,6 +46,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/title/{content:slug}', [ContentController::class, 'show'])->name('contents.show');
         Route::get('/search', SearchController::class)->middleware('throttle:120,1')->name('search');
+        Route::get('/title/imdb/{imdbId}', ImdbImportController::class)
+            ->where('imdbId', 'tt\d{7,10}')
+            ->middleware('throttle:20,1')
+            ->name('imdb.import');
 
         Route::get('/my-list', [WatchlistController::class, 'index'])->name('my-list.index');
         Route::post('/my-list/{content}', [WatchlistController::class, 'store'])->name('my-list.store');

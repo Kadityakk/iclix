@@ -6,6 +6,6 @@
         <span class="tabular-nums" x-text="`${progressPercent}%`"></span>
     </div>
     <div class="h-2 overflow-hidden rounded-full bg-white/10">
-        <div class="h-full rounded-full bg-gradient-to-r from-brand to-glow transition-[width]" :style="`width: ${progressPercent}%`"></div>
+        <div class="h-full rounded-full bg-brand transition-[width]" :style="`width: ${progressPercent}%`"></div>
     </div>
 </div>

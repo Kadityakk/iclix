@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AgeRating;
 use App\Enums\ContentType;
+use App\Support\ContentMedia;
 use Database\Factories\ContentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 #[Fillable([
-    'type', 'title', 'slug', 'synopsis', 'release_year', 'release_date', 'tagline', 'duration_min',
+    'type', 'title', 'slug', 'imdb_id', 'imdb_rating', 'synopsis', 'release_year', 'release_date', 'tagline', 'duration_min',
     'age_rating', 'cast_members', 'poster', 'backdrop', 'trailer_url', 'video_path', 'is_featured',
 ])]
 class Content extends Model
@@ -39,6 +40,7 @@ class Content extends Model
             'cast_members' => 'array',
             'is_featured' => 'boolean',
             'views' => 'integer',
+            'imdb_rating' => 'float',
         ];
     }
 
@@ -109,12 +111,34 @@ class Content extends Model
 
     public function posterUrl(): ?string
     {
-        return $this->poster ? Storage::disk('public')->url($this->poster) : null;
+        return $this->imageUrl($this->poster);
     }
 
     public function backdropUrl(): ?string
     {
-        return $this->backdrop ? Storage::disk('public')->url($this->backdrop) : $this->posterUrl();
+        return $this->imageUrl($this->backdrop) ?? $this->posterUrl();
+    }
+
+    public function imdbUrl(): ?string
+    {
+        return $this->imdb_id ? "https://www.imdb.com/title/{$this->imdb_id}/" : null;
+    }
+
+    public function formattedImdbRating(): ?string
+    {
+        return $this->imdb_rating !== null ? number_format($this->imdb_rating, 1) : null;
+    }
+
+    /**
+     * Images are either uploads on the public disk or IMDb CDN URLs.
+     */
+    private function imageUrl(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+
+        return ContentMedia::isRemote($path) ? $path : Storage::disk('public')->url($path);
     }
 
     /**
@@ -148,7 +172,7 @@ class Content extends Model
     /**
      * The fields the Alpine hero slider, detail modal and live search need.
      *
-     * @return array{id: int, type: string, title: string, slug: string, synopsis: string, year: int, date: ?string, tagline: ?string, duration: ?string, age_rating: string, genres: list<string>, cast: list<string>, poster: ?string, backdrop: ?string, trailer: ?string, url: string, watch_url: string}
+     * @return array{id: int, type: string, title: string, slug: string, synopsis: string, year: int, date: ?string, tagline: ?string, duration: ?string, age_rating: string, rating: ?string, imdb_url: ?string, genres: list<string>, cast: list<string>, poster: ?string, backdrop: ?string, trailer: ?string, url: string, watch_url: string}
      */
     public function toCardData(): array
     {
@@ -163,6 +187,8 @@ class Content extends Model
             'tagline' => $this->tagline,
             'duration' => $this->formattedDuration(),
             'age_rating' => $this->age_rating->value,
+            'rating' => $this->formattedImdbRating(),
+            'imdb_url' => $this->imdbUrl(),
             'genres' => $this->genres->pluck('name')->values()->all(),
             'cast' => $this->cast_members ?? [],
             'poster' => $this->posterUrl(),

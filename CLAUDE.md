@@ -59,7 +59,9 @@ Follow the code; the PRD was written against older assumptions.
 
 **Files:** `App\Support\ContentMedia` stores images on the `public` disk and videos on the `local` disk (`storage/app/private`). Videos never get a public URL: `StreamController` serves them behind `subscribed` and relies on `BinaryFileResponse` for `Range` / 206 support. Paths under `demo/` are shared by seeded records, and `ContentMedia` never deletes them.
 
-**Demo data:** `database/seeders/demo/` holds `catalog.php`, generated artwork and `sample.mp4`. `ContentSeeder` publishes these to the disks and runs `storage:link`.
+**Demo data:** `database/seeders/demo/` holds `catalog.php` (real titles keyed by IMDb ID, with IMDb poster URLs and a rating snapshot) and `sample.mp4`. `ContentSeeder` never calls the network; it publishes the video and runs `storage:link`.
+
+**IMDb:** data comes from OMDb (`App\Support\Imdb`), which needs `OMDB_API_KEY` in `.env`. `php artisan imdb:sync` refreshes every title with an `imdb_id`, and saving content in the admin syncs it too. IMDb is the source of truth: a sync overwrites title, synopsis (English plot), year, release date, runtime, age rating, cast, genres (mapped to the Indonesian names) and rating. It keeps the slug, an uploaded poster, and any field IMDb leaves empty. Re-seeding resets titles to the catalog snapshot until the next sync. Posters from IMDb are stored as `https://` CDN URLs in `contents.poster`, which `ContentMedia::isRemote()` recognises. There is no backdrop source, so the UI is built around portrait posters. Search also queries OMDb for films (cached a day, skipped for kids profiles and terms under 3 characters); opening a hit hits `imdb.import`, which adds the film once with `ContentMedia::SAMPLE_VIDEO_PATH`. `phpunit.xml` blanks `OMDB_API_KEY`; tests set it and must fake `www.omdbapi.com/*` (helpers in `tests/Pest.php`).
 
 **Out of scope for v1:** real payment gateways (checkout is simulated), HLS/DASH, DRM and native apps.
 

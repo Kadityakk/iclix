@@ -16,6 +16,19 @@ class ContentMedia
      */
     private const string SHARED_PREFIX = 'demo/';
 
+    /**
+     * Placeholder video shared by seeded and imported titles until an admin uploads the real file.
+     */
+    public const string SAMPLE_VIDEO_PATH = self::SHARED_PREFIX.'sample.mp4';
+
+    /**
+     * IMDb posters are stored as CDN URLs rather than files on a disk.
+     */
+    public static function isRemote(?string $path): bool
+    {
+        return $path !== null && str_starts_with($path, 'https://');
+    }
+
     public function storeImage(UploadedFile $file, string $directory): string
     {
         return $file->store($directory, 'public');
@@ -57,7 +70,7 @@ class ContentMedia
 
     private function delete(string $disk, ?string $path): void
     {
-        if ($path !== null && ! str_starts_with($path, self::SHARED_PREFIX)) {
+        if ($path !== null && ! str_starts_with($path, self::SHARED_PREFIX) && ! self::isRemote($path)) {
             Storage::disk($disk)->delete($path);
         }
     }

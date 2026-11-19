@@ -36,6 +36,10 @@ $type = old('type', $content->type?->value ?? 'movie');
                 <x-text-input id="slug" name="slug" :value="old('slug', $content->slug)" maxlength="255" />
             </x-admin.field>
 
+            <x-admin.field name="imdb_id" label="ID IMDb" hint="Contoh: tt0816692. Saat disimpan, judul, sinopsis, poster, rating, genre, dan detail lain diambil dari IMDb." class="md:col-span-2">
+                <x-text-input id="imdb_id" name="imdb_id" placeholder="tt0000000" :value="old('imdb_id', $content->imdb_id)" maxlength="12" />
+            </x-admin.field>
+
             <x-admin.field name="tagline" label="Tagline" class="md:col-span-2">
                 <x-text-input id="tagline" name="tagline" :value="old('tagline', $content->tagline)" maxlength="255" />
             </x-admin.field>
@@ -89,7 +93,7 @@ $type = old('type', $content->type?->value ?? 'movie');
         </div>
 
         <div class="grid gap-5 rounded-2xl border border-white/10 bg-card p-6 md:grid-cols-2">
-            <x-admin.field name="poster" label="Poster" hint="Rasio 2:3. JPG, PNG, atau WebP, maks. 2 MB.">
+            <x-admin.field name="poster" label="Poster" hint="Opsional jika ID IMDb diisi. Rasio 2:3, maks. 2 MB.">
                 <x-admin.file-input id="poster" name="poster" accept="image/jpeg,image/png,image/webp" />
             </x-admin.field>
 

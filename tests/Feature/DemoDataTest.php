@@ -8,7 +8,7 @@ use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\Facades\Storage;
 
-test('seeding produces the demo data the PRD asks for', function () {
+test('seeding produces the demo data the PRD asks for, with IMDb titles', function () {
     Storage::fake('public');
     Storage::fake('local');
 
@@ -21,9 +21,9 @@ test('seeding produces the demo data the PRD asks for', function () {
         ->and(Content::query()->where('is_featured', true)->count())->toBeLessThanOrEqual(Content::MAX_FEATURED)
         ->and(Episode::query()->count())->toBeGreaterThan(0);
 
-    $content = Content::query()->first();
+    expect(Content::query()->whereNull('imdb_id')->orWhereNull('imdb_rating')->exists())->toBeFalse()
+        ->and(Content::query()->pluck('poster'))->each->toStartWith('https://m.media-amazon.com/');
 
-    Storage::disk('public')->assertExists([$content->poster, $content->backdrop]);
     Storage::disk('local')->assertExists('demo/sample.mp4');
 });
 

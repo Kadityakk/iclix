@@ -25,7 +25,7 @@
 
         <template x-for="result in results.slice(0, 6)" :key="result.id">
             <a :href="result.url" class="flex items-center gap-3 rounded-lg p-1.5 transition hover:bg-white/10">
-                <img :src="result.poster" :alt="`Poster ${result.title}`" class="h-14 w-10 rounded object-cover" loading="lazy">
+                <img :src="result.poster" x-show="result.poster" :alt="`Poster ${result.title}`" class="h-14 w-10 shrink-0 rounded bg-white/10 object-cover" loading="lazy">
                 <span class="min-w-0">
                     <span class="block truncate text-sm font-medium" x-text="result.title"></span>
                     <span class="block text-xs text-muted" x-text="`${result.type} · ${result.year}`"></span>

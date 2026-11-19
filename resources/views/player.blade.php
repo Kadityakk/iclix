@@ -15,7 +15,7 @@ $nextUrl = $nextEpisode ? route('watch', [$content, $nextEpisode]) : null;
               @keydown.window.left="seekBy(-10)" @keydown.window.right="seekBy(10)"
               @keydown.window.m="toggleMute()" @keydown.window.f="toggleFullscreen()"
               class="relative h-full overflow-hidden bg-black" :class="areControlsVisible || 'cursor-none'">
-            <video x-ref="video" src="{{ $streamUrl }}" preload="metadata" playsinline class="size-full" @if ($content->backdropUrl()) poster="{{ $content->backdropUrl() }}" @endif
+            <video x-ref="video" src="{{ $streamUrl }}" preload="metadata" playsinline class="size-full" 
                    @loadedmetadata="onMetadataLoaded()" @timeupdate="onTimeUpdate()" @click="togglePlay()"
                    @play="isPlaying = true; showControls()" @pause="onPause()" @ended="onEnded()" x-on:error="hasError = true"></video>
 
@@ -29,14 +29,14 @@ $nextUrl = $nextEpisode ? route('watch', [$content, $nextEpisode]) : null;
                 </a>
             </div>
 
-            <div x-show="areControlsVisible" x-transition.opacity class="absolute inset-x-0 top-0 flex items-center gap-4 bg-gradient-to-b from-black/80 to-transparent p-4 md:p-6">
+            <div x-show="areControlsVisible" x-transition.opacity class="absolute inset-x-0 top-0 flex items-center gap-4 bg-black/60 p-4 md:p-6">
                 <a href="{{ route('contents.show', $content) }}" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/25" aria-label="Kembali ke detail">
                     <x-icon name="left" />
                 </a>
                 <h1 class="truncate text-lg font-semibold">{{ $heading }}</h1>
             </div>
 
-            <div x-show="areControlsVisible" x-transition.opacity class="absolute inset-x-0 bottom-0 space-y-2 bg-gradient-to-t from-black/90 to-transparent p-4 md:p-6">
+            <div x-show="areControlsVisible" x-transition.opacity class="absolute inset-x-0 bottom-0 space-y-2 bg-black/60 p-4 md:p-6">
                 <div class="relative flex h-5 items-center">
                     <div class="pointer-events-none absolute inset-x-0 h-1 rounded-full bg-white/25">
                         <div class="h-full rounded-full bg-white/30" :style="`width: ${bufferedPercent}%`"></div>

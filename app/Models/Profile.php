@@ -17,17 +17,17 @@ class Profile extends Model
     use HasFactory;
 
     /**
-     * Avatar presets mapped to their Tailwind gradient classes.
+     * Avatar presets mapped to their Tailwind background color classes.
      *
      * @var array<string, string>
      */
     public const array AVATARS = [
-        'violet' => 'from-violet-500 to-fuchsia-600',
-        'rose' => 'from-rose-500 to-orange-400',
-        'sky' => 'from-sky-500 to-indigo-600',
-        'emerald' => 'from-emerald-400 to-teal-600',
-        'amber' => 'from-amber-400 to-rose-500',
-        'slate' => 'from-slate-400 to-slate-700',
+        'violet' => 'bg-violet-500',
+        'rose' => 'bg-rose-500',
+        'sky' => 'bg-sky-500',
+        'emerald' => 'bg-emerald-500',
+        'amber' => 'bg-amber-500',
+        'slate' => 'bg-slate-500',
     ];
 
     /**
@@ -74,7 +74,7 @@ class Profile extends Model
         return $this->hasMany(Rating::class);
     }
 
-    public function avatarGradient(): string
+    public function avatarColor(): string
     {
         return self::AVATARS[$this->avatar] ?? self::AVATARS['violet'];
     }

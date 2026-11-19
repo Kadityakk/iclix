@@ -71,3 +71,33 @@ function watchingAs(Profile $profile): TestCase
         ->actingAs($profile->user)
         ->withSession([EnsureProfileIsSelected::SESSION_KEY => $profile->id]);
 }
+
+const OMDB_ENDPOINT = 'www.omdbapi.com/*';
+
+const IMDB_POSTER = 'https://m.media-amazon.com/images/M/MV5BYzdjMDAx@._V1_SX300.jpg';
+
+const IMDB_POSTER_RESIZED = 'https://m.media-amazon.com/images/M/MV5BYzdjMDAx@._V1_QL75_UX500_.jpg';
+
+/**
+ * An OMDb title payload for Interstellar.
+ *
+ * @return array<string, string>
+ */
+function omdbTitle(array $overrides = []): array
+{
+    return $overrides + [
+        'Response' => 'True',
+        'imdbID' => 'tt0816692',
+        'Title' => 'Interstellar',
+        'Type' => 'movie',
+        'Year' => '2014',
+        'Rated' => 'PG-13',
+        'Genre' => 'Adventure, Drama, Sci-Fi',
+        'Plot' => 'A team of explorers travel through a wormhole in space.',
+        'Released' => '07 Nov 2014',
+        'Runtime' => '169 min',
+        'Actors' => 'Matthew McConaughey, Anne Hathaway, Jessica Chastain',
+        'Poster' => IMDB_POSTER,
+        'imdbRating' => '8.7',
+    ];
+}

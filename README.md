@@ -35,8 +35,8 @@ php artisan migrate:fresh --seed  # kembalikan ke data demo
 - **Database** bawaan adalah SQLite. Untuk MySQL, isi `DB_*` di `.env`, lalu jalankan `php artisan migrate --seed`.
 - **Upload video** sampai 500 MB membutuhkan `upload_max_filesize` dan `post_max_size` minimal `512M` di `php.ini`.
 - **Email reset password** ditulis ke `storage/logs/laravel.log` sampai `MAIL_*` di `.env` diatur.
-- **Konten demo** bersifat fiktif. Gambar dibuat khusus untuk proyek ini, video berupa klip contoh 45 detik, dan trailer memakai film terbuka Blender Foundation.
+- **Konten demo** berisi film dan serial asli. Judul, sinopsis, poster, rating, dan detail lain diambil dari IMDb lewat OMDb API. Isi `OMDB_API_KEY` di `.env` (kunci gratis di omdbapi.com), lalu jalankan `php artisan imdb:sync`. Videonya tetap klip contoh 45 detik.
 
 ## Efek parallax
 
-Lapisan bergerak dengan kecepatan berbeda saat halaman digulir dan mengikuti kursor di perangkat yang mendukung hover. Efek ini ada di landing page, hero beranda, hero halaman detail, dan latar halaman tamu. Efeknya mati otomatis jika perangkat diatur ke `prefers-reduced-motion`. Kodenya ada di `resources/js/parallax.js`.
+Lapisan bergerak dengan kecepatan berbeda saat halaman digulir dan mengikuti kursor di perangkat yang mendukung hover. Direktif `x-parallax` tersedia, tetapi tampilan saat ini sengaja dibuat polos tanpa efek ini. Efeknya mati otomatis jika perangkat diatur ke `prefers-reduced-motion`. Kodenya ada di `resources/js/parallax.js`.

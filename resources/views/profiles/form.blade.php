@@ -16,10 +16,10 @@
         <fieldset>
             <legend class="text-sm font-medium text-body/90">Avatar</legend>
             <div class="mt-2 flex flex-wrap gap-3">
-                @foreach (\App\Models\Profile::AVATARS as $avatar => $gradient)
+                @foreach (\App\Models\Profile::AVATARS as $avatar => $color)
                     <label class="cursor-pointer">
                         <input type="radio" name="avatar" value="{{ $avatar }}" class="peer sr-only" @checked(old('avatar', $profile->avatar) === $avatar)>
-                        <span class="block size-12 rounded-full bg-gradient-to-br {{ $gradient }} ring-white ring-offset-2 ring-offset-card transition peer-checked:ring-2 peer-focus-visible:ring-2"></span>
+                        <span class="block size-12 rounded-full {{ $color }} ring-white ring-offset-2 ring-offset-card transition peer-checked:ring-2 peer-focus-visible:ring-2"></span>
                         <span class="sr-only">{{ $avatar }}</span>
                     </label>
                 @endforeach
